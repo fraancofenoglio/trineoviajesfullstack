@@ -11,11 +11,4 @@ router.post("/register", postRegister);
 
 router.patch("/forgot-password", patchPassword);
 
-
-
-router.get("/ping", async (req, res) => {
-    const [result] = await pool.query("SELECT 'Pong' AS result")
-    res.json(result[0].result)
-})
-
 export default router;
