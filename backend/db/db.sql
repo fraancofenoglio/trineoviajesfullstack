@@ -28,4 +28,4 @@ CREATE TABLE users (
 );
 
 INSERT INTO users VALUES 
-    (1, "francofeno26@gmail.com", "cabecilla");
+    (1, "francofeno26@gmail.com", "abcdefg");
