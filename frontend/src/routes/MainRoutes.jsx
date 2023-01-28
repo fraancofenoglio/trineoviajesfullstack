@@ -7,7 +7,7 @@ import Register from '../pages/Register';
 import ForgotPassword from '../pages/ForgotPassword';
 import Checkout from '../pages/Checkout';
 import { useSelector } from 'react-redux';
-// import NotFound from '../pages/NotFound';
+import NotFound from '../pages/NotFound';
 
 function MainRoutes() {
 
@@ -34,7 +34,7 @@ function MainRoutes() {
         }></Route> 
 
         <Route path='/' element={<Navigate to="/home"/>}></Route>
-        {/* <Route path='*' element={<NotFound/>}></Route> */}
+        <Route path='*' element={<NotFound/>}></Route>
 
       </Routes>
     </>

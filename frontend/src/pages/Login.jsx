@@ -6,7 +6,7 @@ import { setUser } from "../actions/user-actions";
 import FooterSection from "../components/FooterSection";
 import LoaderBTN from "../components/LoaderBTN";
 import Modal from "../components/Modal";
-import { signInWithGoogle, modalMessages, modalTitles } from "../firebase/firebaseUtils";
+import { signInWithGoogle, modalTitles } from "../firebase/firebaseUtils";
 import axios from 'axios';
 
 import { useSelector } from 'react-redux';
@@ -27,7 +27,6 @@ function Login() {
 
     const currentUser =  useSelector(state => state.user.currentUser);
 
-
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -37,25 +36,21 @@ function Login() {
             const loginUser = await axios.post("http://localhost:3000/login", {
                 email,
                 password
-            })
-            console.log(loginUser.data)
-            dispatch(setUser(loginUser.data));//no funca, es como que se reinicia el user, lo agrega al params pero se vuelve al /login
+            });
+
+            dispatch(setUser(loginUser.data));
             navigate(`/account/${currentUser.email}`);
             
         } catch (error) {
-            if (error.code === "auth/user-not-found") {
+            if (error.response.status === 404 || error.response.status === 500) {
                 
                 setTitle(modalTitles.ups);
-                setMessage(modalMessages.userNotFound);
-                setOpen(true);
-            }else if (error.code === "auth/wrong-password"){
-                setTitle(modalTitles.ups);
-                setMessage(modalMessages.wrongPassword);
+                setMessage(error.response.data.message);
                 setOpen(true);
             }
         } finally {
             setLoading(false)
-            console.log(currentUser)
+
         }
     }
 
@@ -101,7 +96,7 @@ function Login() {
                         onClick={async () => {
                             const result = await signInWithGoogle();
                             dispatch(setUser(result.user));
-                            navigate(`/account/franco`);
+                            navigate(`/account/${currentUser.email}`);
                             
                         }}
                         onMouseEnter={() => setimg(!img)}

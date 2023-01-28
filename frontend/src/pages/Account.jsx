@@ -22,7 +22,10 @@ function Account() {
       try {
         setLoading(true)
         const res = await axios.get(`http://localhost:3000/account/${currentUser.email}`)
-        setData(res.data)
+        if(res){
+
+          setData(res.data)
+        }
         setLoading(false)
         
       } catch (error) {
@@ -37,12 +40,11 @@ function Account() {
 
     const handleLogout = async () => {
         try {
-            await signOutUser(); // agregar para cerrar sesion sin firebase
-            dispatch(setUser(null));
-            navigate("/login");
-
+          await signOutUser();
+          dispatch(setUser(null));
+          navigate("/login");
         } catch (error) {
-            console.log(error.code);
+          console.log(error.code);
         }
     }
 
@@ -53,7 +55,7 @@ function Account() {
         <div className="user-display">
 
             <h1>¡Bienvenid@,  {currentUser?.displayName || currentUser?.email}!</h1>
-            <img style={{borderRadius: "50%"}} src={currentUser?.photoURL || "./assets/user-circle-regular-36.png"} alt="user"/>
+            <img style={{borderRadius: "50%"}} src={currentUser?.photoURL || "../assets/user-circle-regular-36.png"} alt="user"/>
             <Button text={"Cerrar Sesión"} action={handleLogout}></Button>
 
         </div>

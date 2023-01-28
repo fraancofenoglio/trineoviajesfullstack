@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import FooterSection from "../components/FooterSection";
 import LoaderBTN from "../components/LoaderBTN";
 import Modal from "../components/Modal";
-import {modalMessages, modalTitles} from "../firebase/firebaseUtils";
+import { modalTitles} from "../firebase/firebaseUtils";
 import axios from 'axios';
 
 
@@ -23,27 +23,23 @@ function Register() {
 
         try {
             setLoading(true)
-            // await registerUser(email, password); aca hay que usar axios
             const registerUser = await axios.post("http://localhost:3000/register", {
                 email,
                 password
             })
+
             setTitle(modalTitles.congrats);
-            setMessage(modalMessages.succesfulRegister);
+            setMessage(registerUser.data.message);
             setOpen(true);
             setFn(true);
 
         } catch (error) {
-            if (error.code === "auth/weak-password") {
+            if (error.response.status === 404 || error.response.status === 500) {
                 
                 setTitle(modalTitles.ups);
-                setMessage(modalMessages.weakPassword);
+                setMessage(error.response.data.message);
                 setOpen(true);
 
-            } else if (error.code === "auth/email-already-in-use"){
-                setTitle(modalTitles.ups);
-                setMessage(modalMessages.emailInUSe);
-                setOpen(true);
             }
         } finally {
             setLoading(false)

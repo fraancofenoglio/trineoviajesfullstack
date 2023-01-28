@@ -2,10 +2,8 @@ import Loader from './Loader';
 
 const Orders = ({data, loading}) => {
 
- console.log(data)
   const parsear = (viajes) => {
     const trips = JSON.parse(viajes)
-    console.log(trips)
     return trips
   }
 
@@ -14,6 +12,8 @@ const Orders = ({data, loading}) => {
   } else return (
     <div className='orders'>
       <h1>Mis órdenes</h1>
+
+      {data === undefined ? <h2>Aun no hay viajes encargados.</h2> : ""}
 
       {data?.map((d, i) => (
         <div className='order-card' key={i}>

@@ -21,10 +21,8 @@ export const postOrder = async (req, res) => {
     const {resid, email, trips, totalPrice} = req.body;
     
     try {
-        console.log(trips.length)
         const [rows] = await pool.query("INSERT INTO orders (resid, email, trips, totalPrice) VALUES (?, ?, ?, ?)", [resid, email, trips, totalPrice]);
         
-        console.log(email, rows)
         res.json({
             id: rows.insertId,
             resid,
