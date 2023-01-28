@@ -7,7 +7,7 @@ import Register from '../pages/Register';
 import ForgotPassword from '../pages/ForgotPassword';
 import Checkout from '../pages/Checkout';
 import { useSelector } from 'react-redux';
-import NotFound from '../pages/NotFound';
+// import NotFound from '../pages/NotFound';
 
 function MainRoutes() {
 
@@ -17,12 +17,15 @@ function MainRoutes() {
       <Routes>
 
         <Route path="/home" element={<Home/>}   />
-        <Route path='/register' element={ currentUser === null ? <Register/> : <Navigate to="/account"/>} />
-        <Route path='/login' element={ currentUser === null ? <Login/> : <Navigate to="/account"/>} />
-        <Route path='/forgot-password' element={currentUser === null ? <ForgotPassword/> : <Navigate to="/account"/>}/>
+        <Route path='/register' element={ currentUser === null ? <Register/> : <Navigate to={`/account/${currentUser.email}`
+        }/>} />
+        <Route path='/login' element={ currentUser === null ? <Login/> : <Navigate to={`/account/${currentUser.email}`
+        }/>} />
+        <Route path='/forgot-password' element={currentUser === null ? <ForgotPassword/> : <Navigate to={`/account/${currentUser.email}`
+        }/>}/>
         <Route path='/checkout' element={ currentUser !== null ? <Checkout/> : <Navigate to="/login"/>}/>
 
-        <Route path='/account' element={
+        <Route path='/account/:email' element={
 
           <ProtectedRoute redirectTo={"/login"}>
             <Account/>
@@ -31,7 +34,7 @@ function MainRoutes() {
         }></Route> 
 
         <Route path='/' element={<Navigate to="/home"/>}></Route>
-        <Route path='*' element={<NotFound/>}></Route>
+        {/* <Route path='*' element={<NotFound/>}></Route> */}
 
       </Routes>
     </>

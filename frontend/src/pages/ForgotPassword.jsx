@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Button from "../components/buttons/Button";
 import Modal from "../components/Modal";
-import { resetPassword, modalMessages, modalTitles } from "../firebase/firebaseUtils";
+import {  modalMessages, modalTitles } from "../firebase/firebaseUtils";
 
 function ForgotPassword() {
     const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ function ForgotPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await resetPassword(email);
+            // await resetPassword(email); aca hay que usar axios
             setTitle(modalTitles.ok);
             setMessage(modalMessages.resetSent);
             setOpen(true);

@@ -1,21 +1,11 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
+import {  GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./firebaseConfig";
-
-const registerUser = async (email, password) => {
-    await createUserWithEmailAndPassword(auth, email, password);
-}
-
-const loginUser = async (email, password) => {
-    await signInWithEmailAndPassword(auth, email, password)
-}
 
 const signOutUser = () => auth.signOut();
 
 const provider = new GoogleAuthProvider();
 
 const signInWithGoogle = () => signInWithPopup(auth, provider);
-
-const resetPassword = async (email) => await sendPasswordResetEmail(auth, email);
 
 const modalMessages = {
     weakPassword: "Contraseña débil, la contraseña debe tener al menos 6 caracteres.",
@@ -37,4 +27,4 @@ const modalTitles = {
 }
 
 
-export {registerUser, loginUser, signOutUser, signInWithGoogle, resetPassword, modalMessages, modalTitles};
+export {signOutUser, signInWithGoogle, modalMessages, modalTitles};

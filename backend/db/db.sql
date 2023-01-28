@@ -6,7 +6,7 @@ CREATE TABLE orders (
     id INT(11) NOT NULL AUTO_INCREMENT,
     resid VARCHAR(6),
     email VARCHAR(45) DEFAULT NULL,
-    trips VARCHAR(200) DEFAULT NULL,
+    trips VARCHAR(2000) DEFAULT NULL,
     totalPrice INT(20) DEFAULT NULL,
     PRIMARY KEY (id)
 );

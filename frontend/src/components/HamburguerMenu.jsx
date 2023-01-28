@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 
@@ -6,6 +7,7 @@ function HamburguerMenu({hamb}) {
 
     const [menu, setMenu] = useState(false);
     const [open, setOpen] = useState(false);
+    const currentUser =  useSelector(state => state.user.currentUser);
 
     const handleClick = (e) => {
 
@@ -45,7 +47,7 @@ function HamburguerMenu({hamb}) {
 
                         <li className="list-menu">
 
-                            <Link className="link-list-menu" to="/account">
+                            <Link className="link-list-menu" to={currentUser ? `/account/${currentUser.email}` : "/login"}>
                                 MI CUENTA
                             </Link>
 

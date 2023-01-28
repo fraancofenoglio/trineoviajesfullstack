@@ -14,8 +14,7 @@ export const postLogin = async (req, res) => {
 
         if (compare) {
             
-            res.send("iniciando sesion");
-            console.log("iniciando sesion")
+            res.json({email: email})
         } else return res.status(404).json({message: "Contraseña incorrecta."})
 
     } catch (error) {

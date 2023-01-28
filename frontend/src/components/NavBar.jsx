@@ -14,6 +14,7 @@ function NavBar({hamb, setHamb}) {
     const dispatch = useDispatch();
     const toggle = useSelector(state => state.cart.cartOpen);
     const state = useSelector(state => state.cart.cartItems);
+    const currentUser =  useSelector(state => state.user.currentUser);
 
   return (
     <nav className="nav-desktop">
@@ -37,7 +38,7 @@ function NavBar({hamb, setHamb}) {
                 </div>
                 
                 <div className="login">
-                    <NavLink to="/account">
+                    <NavLink to={currentUser ? `/account/${currentUser.email}` : "/login"}>
                         MI CUENTA
                     </NavLink>
                 </div>

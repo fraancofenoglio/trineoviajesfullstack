@@ -4,28 +4,39 @@ import { useNavigate } from "react-router-dom";
 import {remove_all_from_cart} from "../actions/cartActions";
 import FooterSection from "../components/FooterSection";
 import Modal from "../components/Modal";
-import { useFirestore } from "../hooks/useFirebase";
+import { nanoid } from "nanoid";
 import {modalMessages, modalTitles} from '../firebase/firebaseUtils'
+import axios from 'axios';
+
+
 
 function Checkout() {
 
     const [open, setOpen] = useState(false);
-
-    const {addData} = useFirestore();
     const navigate = useNavigate();
-
-    const state = useSelector(state => state.cart.cartItems);
+    const state = useSelector(state => state.cart.cartItems);//deberia convertir en string lo del carrito
+    const currentUser =  useSelector(state => state.user.currentUser);
     const dispatch = useDispatch();
 
     const quant = state.reduce((acc, cart) => {
         return acc + (cart.price * cart.quantity);
     }, 0);
 
-    const handleClick = () => {
+
+    const handleClick = async () => {
 
         if (state.length) {
-            
-            addData(quant, state);
+            try {
+                const res = await axios.post('http://localhost:3000/checkout', {
+                    resid: nanoid(6),
+                    email: currentUser.email,
+                    trips: JSON.stringify(state),
+                    totalPrice: quant
+                })
+
+            } catch (error) {
+                console.log(error)
+            }
             dispatch(remove_all_from_cart());
             setOpen(true);
         }
@@ -50,7 +61,7 @@ function Checkout() {
             </div>
         </div>
 
-        <Modal open={open} setOpen={setOpen} fn={() => navigate("/account")}>
+        <Modal open={open} setOpen={setOpen} fn={() => navigate(`/account/${currentUser.email}`)}>
             <h3>{modalTitles.congrats}</h3>
             <p>{modalMessages.succesfulPurchase}</p>
         </Modal>

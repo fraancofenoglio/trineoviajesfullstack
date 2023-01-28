@@ -7,4 +7,6 @@ router.get("/account/:email", getOrders);
 
 router.post("/checkout", postOrder);
 
+console.log("todo ok")
+
 export default router

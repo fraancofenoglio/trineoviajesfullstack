@@ -19,11 +19,13 @@ export const getOrders = async (req, res) => {
 export const postOrder = async (req, res) => {
 
     const {resid, email, trips, totalPrice} = req.body;
+    
     try {
-
-        const [rows] = await pool.query("INSERT INTO orders(resid, email, trips, totalPrice) VALUES (?, ?, ?, ?)", [resid, email, trips, totalPrice]);
-
-        res.send({
+        console.log(trips.length)
+        const [rows] = await pool.query("INSERT INTO orders (resid, email, trips, totalPrice) VALUES (?, ?, ?, ?)", [resid, email, trips, totalPrice]);
+        
+        console.log(email, rows)
+        res.json({
             id: rows.insertId,
             resid,
             email,
@@ -33,7 +35,7 @@ export const postOrder = async (req, res) => {
 
     } catch (error) {
         
-        return res.status(500).json({
+        return res.status(400).json({
             message: "Algo salió mal"
         });
     }

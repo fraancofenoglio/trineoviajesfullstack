@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import FooterSection from "../components/FooterSection";
 import LoaderBTN from "../components/LoaderBTN";
 import Modal from "../components/Modal";
-import {registerUser, modalMessages, modalTitles} from "../firebase/firebaseUtils";
+import {modalMessages, modalTitles} from "../firebase/firebaseUtils";
+import axios from 'axios';
+
 
 function Register() {
 
@@ -21,7 +23,11 @@ function Register() {
 
         try {
             setLoading(true)
-            await registerUser(email, password);
+            // await registerUser(email, password); aca hay que usar axios
+            const registerUser = await axios.post("http://localhost:3000/register", {
+                email,
+                password
+            })
             setTitle(modalTitles.congrats);
             setMessage(modalMessages.succesfulRegister);
             setOpen(true);

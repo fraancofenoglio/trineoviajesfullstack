@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import HamburguerMenu from './components/HamburguerMenu';
 import {setUser} from "./actions/user-actions";
 import {auth} from "./firebase/firebaseConfig";
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth'; //sacar
 import { useDispatch, useSelector } from 'react-redux';
 
 function App() {

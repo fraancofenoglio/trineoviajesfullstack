@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../actions/user-actions";
@@ -12,10 +14,30 @@ function Account() {
     const currentUser =  useSelector(state => state.user.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [data, setData] = useState()
+    const [loading, setLoading] = useState(false)
+  
+    const getData = async () => {
+  
+      try {
+        setLoading(true)
+        const res = await axios.get(`http://localhost:3000/account/${currentUser.email}`)
+        setData(res.data)
+        setLoading(false)
+        
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    useEffect(() => {
+      getData()
+    }, []);
 
     const handleLogout = async () => {
         try {
-            await signOutUser();
+            await signOutUser(); // agregar para cerrar sesion sin firebase
             dispatch(setUser(null));
             navigate("/login");
 
@@ -36,7 +58,7 @@ function Account() {
 
         </div>
 
-        <Orders></Orders>
+        <Orders data={data} loading={loading}></Orders>
         
         <FooterSection></FooterSection>
     </>

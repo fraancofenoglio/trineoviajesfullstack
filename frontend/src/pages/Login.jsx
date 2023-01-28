@@ -6,7 +6,11 @@ import { setUser } from "../actions/user-actions";
 import FooterSection from "../components/FooterSection";
 import LoaderBTN from "../components/LoaderBTN";
 import Modal from "../components/Modal";
-import { loginUser, signInWithGoogle, modalMessages, modalTitles } from "../firebase/firebaseUtils";
+import { signInWithGoogle, modalMessages, modalTitles } from "../firebase/firebaseUtils";
+import axios from 'axios';
+
+import { useSelector } from 'react-redux';
+
 
 function Login() {
 
@@ -21,19 +25,26 @@ function Login() {
     const [title, setTitle] = useState();
     const [loading, setLoading] = useState(false);
 
+    const currentUser =  useSelector(state => state.user.currentUser);
+
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
         
         try {
             setLoading(true)
-            const result = await loginUser(email, password);
-            dispatch(setUser(result));
-            navigate("/account");
-
+            const loginUser = await axios.post("http://localhost:3000/login", {
+                email,
+                password
+            })
+            console.log(loginUser.data)
+            dispatch(setUser(loginUser.data));//no funca, es como que se reinicia el user, lo agrega al params pero se vuelve al /login
+            navigate(`/account/${currentUser.email}`);
+            
         } catch (error) {
             if (error.code === "auth/user-not-found") {
-
+                
                 setTitle(modalTitles.ups);
                 setMessage(modalMessages.userNotFound);
                 setOpen(true);
@@ -44,9 +55,9 @@ function Login() {
             }
         } finally {
             setLoading(false)
+            console.log(currentUser)
         }
     }
-     
 
   return (
     <>
@@ -90,7 +101,7 @@ function Login() {
                         onClick={async () => {
                             const result = await signInWithGoogle();
                             dispatch(setUser(result.user));
-                            navigate("/account");
+                            navigate(`/account/franco`);
                             
                         }}
                         onMouseEnter={() => setimg(!img)}
